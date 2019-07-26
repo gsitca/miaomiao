@@ -31,8 +31,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
-#content{ flex:1; overflow:auto;position: relative; display: flex; flex-direction:column;}
+//  margin-bottom: 50px;
+#content{ flex:1; overflow:auto; position: relative; display: flex; flex-direction:column;}
 #content .movie_menu{ width: 100%; height: 45px; border-bottom:1px solid #e6e6e6; display: flex; justify-content:space-between; align-items:center; background:white; z-index:10;}
 .movie_menu .city_name{ margin-left: 20px; height:100%; line-height: 45px;}
 .movie_menu .city_name.active{ color: #ef4238; border-bottom: 2px #ef4238 solid;}
