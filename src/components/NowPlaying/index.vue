@@ -1,6 +1,7 @@
 <template>
-    <div class="movie_body">
-        <ul>
+      <div class="movie_body" ref="movie_body">
+       <Loading v-if="isLoading"/>
+        <ul v-else>
             <li v-for="item in movieInfoList" :key="item.id">
                 <div class="pic_show"><img :src="item.img |setWH('128.180')" ></div>
                 <div class="info_list">
@@ -18,11 +19,14 @@
     </div>
 </template>
 <script>
+//import BScroll from 'better-scroll';  //安装滑动模块
+// import { prototype } from 'events';
 export default {
     name:'NowPlaying',
     data(){
         return {
-            movieInfoList:[]
+            movieInfoList:[],
+            isLoading:true,
         }
     },
     mounted() {
@@ -30,9 +34,29 @@ export default {
             var res=result.data.data;
             if(result.status == 200){
               this.movieInfoList=res.movieList;
+              this.isLoading=false;
+              //滑动模块start
+            //   this.$nextTick(()=>{
+            //       var scroll=new BScroll(this.$refs.movie_body,{
+            //           tap:true,
+            //           probeType:1,
+            //       });
+            //       scroll.on('scroll',()=>{
+            //            console.log("滑动上")
+            //       });
+            //     scroll.on('touchEnd',()=>{
+            //         console.log("滑动下")
+            //     });
+            //   });
+            //滑动模块end
             }
         
         })
+    },
+    methods:{
+       handleToDetail(){
+           console.log("handleToDetail")
+       }
     },
 }
 </script>

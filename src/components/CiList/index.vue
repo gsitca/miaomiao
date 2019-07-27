@@ -1,6 +1,7 @@
 <template>
     <div class="cinema_body">
-        <ul>
+        <Loading v-if="isLoading"/>
+        <ul v-else>
             <li v-for="item in cinemaList" :key="item.id">
                 <div>
                     <span>{{item.nm}}</span>
@@ -11,8 +12,7 @@
                     <span>{{item.distance}}</span>
                 </div>
                 <div class="card">
-                    <div>小吃</div>
-                    <div>折扣卡</div>
+                    <div v-for="(num,key) in item.tag" v-if="num==1" :class="key |foramtClass" :key="key">{{key | foramtCard}}</div>
                 </div>
             </li>
         </ul>
@@ -23,24 +23,57 @@ export default {
     name:'CiList', 
     data(){
         return {
-            cinemaList:[]
+            cinemaList:[],
+            isLoading:true,
         }
     },
     mounted(){
          this.axios.get('/api/cinemaList?cityId=10').then((result)=>{
-                var cinemas=result.data.data
+                var cinemas=result.data.data;
                 if(result.status==200){
+                   this.isLoading=false;
                    this.cinemaList=cinemas.cinemas;
                 }else{
                     console.log("影院获取失败！");
                 }
-               
          })     
-    }
+    },
+    filters:{
+        foramtCard(key){
+            var card=[
+                {key:'endorse',value:'退换'},
+                {key:'snack',value:'小吃'},
+                {key:'allowRefund',value:'折扣'},
+                {key:'cityCardTag',value:'免费'},
+                {key:'buyout',value:'限时'},
+            ];
+            for (var i = 0; i < card.length; i++) {
+               if(card[i].key === key){
+                  return card[i].value;
+              }
+            }
+              return '最近';             
+        },
+         foramtClass(key){
+            var card=[
+                {key:'endorse',value:'or'},
+                {key:'snack',value:'or'},
+                {key:'allowRefund',value:'bl'},
+                {key:'cityCardTag',value:'bl'},
+                {key:'buyout',value:'bl'},
+            ];
+            for (var i = 0; i < card.length; i++) {
+               if(card[i].key === key){
+                  return card[i].value;
+              }
+            }
+              return 'bl';             
+        }
+    },
 }
 </script>
 <style scoped>
-#content .cinema_body{ flex:1; overflow:auto;}
+#content .cinema_body{ flex:1; overflow:auto;} 
 .cinema_body ul{ padding:20px;}
 .cinema_body li{  border-bottom:1px solid #e6e6e6; margin-bottom: 20px;}
 .cinema_body div{ margin-bottom: 10px;}

@@ -1,6 +1,7 @@
 <template>
     <div class="city_body">
         <div class="city_list">
+             <Loading v-if="isLoading"/>
             <div class="city_hot">
                 <h2>热门城市</h2>
                 <ul class="clearfix">
@@ -29,7 +30,8 @@ export default {
     data(){
         return {
             cityList : [],
-            hotList : []
+            hotList : [],
+              isLoading:true,
         }
     },
     mounted(){
@@ -40,6 +42,7 @@ export default {
              var list= this.formatCityList(cities);
                 this.cityList=list.cityList;
                 this.hotList=list.hotList;  
+                this.isLoading=false;
             }else{
                 console.log("获取城市失败！")
             }

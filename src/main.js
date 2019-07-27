@@ -8,6 +8,8 @@ Vue.config.productionTip = false
 Vue.filter('setWH',(url,arg)=>{
   return url.replace(/w\.h/,arg);
 });
+import Loading from '@/components/Loading';
+Vue.component("Loading",Loading);
 new Vue({
   router,
   store,

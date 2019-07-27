@@ -1,6 +1,7 @@
 <template>
     <div class="movie_body">
-        <ul>
+    <Loading v-if="isLoading"/>
+        <ul v-else>
             <li v-for="item in movieComingList" :key="item.id">
                 <div class="pic_show"><img :src="item.img | setWH('128.180')"></div>
                 <div class="info_list">
@@ -22,7 +23,8 @@ export default {
     name:'ComingSoon',
     data(){
         return {
-            movieComingList: []
+            movieComingList: [],
+              isLoading:true,
         }
     },
     mounted(){
@@ -30,6 +32,7 @@ export default {
             var res = result.data.data;
             if(result.status == 200){
                 this.movieComingList=res.comingList;
+                this.isLoading=false;
             }else{
                 console.log("获取列表失败！")
             }
@@ -38,8 +41,7 @@ export default {
 }
 </script>
 <style scoped>
-
-#content .movie_body{ flex:1; overflow:auto;}
+/* #content .movie_body{ flex:1; overflow:auto;} */
 .movie_body ul{ margin:0 12px; overflow: hidden;}
 .movie_body ul li{ margin-top:12px; display: flex; align-items:center; border-bottom: 1px #e6e6e6 solid; padding-bottom: 10px;}
 .movie_body .pic_show{ width:64px; height: 90px;}

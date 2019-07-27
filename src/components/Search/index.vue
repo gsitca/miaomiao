@@ -8,7 +8,8 @@
         </div>
         <div class="search_result">
             <h3>电影/电视剧/综艺</h3>
-            <ul>
+            <Loading v-if="isLoading"/>
+            <ul v-else>
                 <li v-for="item in movieList" :key="item.id">
                     <div class="img"><img :src=" item.img | setWH('128.180')"></div>
                     <div class="info">
@@ -28,7 +29,8 @@ export default {
     data(){
         return {
             message: '',
-            movieList:[]
+            movieList:[],
+            isLoading:true,
         }
     },
     methods :{
@@ -46,12 +48,16 @@ export default {
               this.axios.get('/api/searchList?cityId=10&kw='+newVal,{
                   cancelToken: new this.axios.CancelToken(function executor(c) {
                     that.source = c;
+                   
                 })
              }).then((result)=>{
                 var msg=result.data.msg;
+                
                 var movie=result.data.data.movies;
                  if(movie && msg){
+                        this.isLoading=false;
                         this.movieList=movie.list;
+                        
                  }
                
              }).catch((err) => {
