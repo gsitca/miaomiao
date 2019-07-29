@@ -25,10 +25,16 @@ export default {
         return {
             cinemaList:[],
             isLoading:true,
+            prveCityId:-1,
         }
     },
-    mounted(){
-         this.axios.get('/api/cinemaList?cityId=10').then((result)=>{
+    activated(){
+        var cityId=this.$store.state.city.id;
+        if(this.prevCityId==cityId){
+            return
+        }
+        this.isLoading=true;
+         this.axios.get('/api/cinemaList?cityId='+cityId).then((result)=>{
                 var cinemas=result.data.data;
                 if(result.status==200){
                    this.isLoading=false;

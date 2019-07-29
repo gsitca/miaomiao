@@ -4,7 +4,7 @@
         <div id="content">
             <div class="movie_menu">
                 <router-link to="city" tag="div" class="city_name" >
-                    <span>大连</span><i class="iconfont icon-lower-triangle"></i>
+                    <span>{{$store.state.city.nm}}</span><i class="iconfont icon-lower-triangle"></i>
                 </router-link>
                 <div class="hot_swtich">
                     <router-link to="nowplaying" tag="div" class="hot_item">正在热映</router-link>
@@ -15,18 +15,47 @@
                 </router-link>
             </div>
         </div>
-        <router-view></router-view>
+        <!-- 加入缓存 keep-alive -->
+         <keep-alive>
+            <router-view />
+         </keep-alive>
          <TabBar />
     </div>  
 </template>
 <script>
 import Header from '@/components/Header';
 import TabBar from '@/components/TabBar';
+import {messageBox} from '@/components/JS';
+import { setTimeout } from 'timers';
 export default {
     name:'Movie',
     components:{
         Header,
-        TabBar
+        TabBar,
+    },
+    mounted(){
+        this.axios.get('/api/getLocation').then((result)=>{
+          var msg = result.data.msg;
+            if(msg == 'ok'){
+                var nm= result.data.data.nm;
+                var id= result.data.data.id;
+                if(this.$store.state.city.id == id){return}
+                setTimeout(function(){
+                     messageBox({
+                    title:'切换至当前城市',
+                    content:result.data.data.nm,
+                    cancel:'取消',
+                    ok:'确定',
+                    handleOk(){
+                        window.localStorage.setItem('nowNm',nm);
+                        window.localStorage.setItem('nowId',id);
+                        window.location.reload();
+                    }
+                })},2000);
+               
+             }
+        });
+       
     }
 }
 </script>

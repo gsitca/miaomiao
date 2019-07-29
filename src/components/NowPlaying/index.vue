@@ -20,21 +20,28 @@
 </template>
 <script>
 //import BScroll from 'better-scroll';  //安装滑动模块
-// import { prototype } from 'events';
+import { prototype } from 'events';
 export default {
     name:'NowPlaying',
     data(){
         return {
             movieInfoList:[],
             isLoading:true,
+            prveCityId:-1,
         }
     },
-    mounted() {
-        this.axios.get('/api/movieOnInfoList?cityId=10').then((result)=>{
+    activated() {
+    var cityId=this.$store.state.city.id;
+        if(this.prevCityId==cityId){
+            return
+        }
+        this.isLoading=true;
+        this.axios.get('/api/movieOnInfoList?cityId='+cityId).then((result)=>{
             var res=result.data.data;
             if(result.status == 200){
               this.movieInfoList=res.movieList;
               this.isLoading=false;
+              this.prveCityId=cityId;
               //滑动模块start
             //   this.$nextTick(()=>{
             //       var scroll=new BScroll(this.$refs.movie_body,{
