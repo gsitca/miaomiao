@@ -6,6 +6,7 @@ import axios from 'axios';
 Vue.prototype.axios = axios;
 Vue.config.productionTip = false
 Vue.filter('setWH',(url,arg)=>{
+  if(url)
   return url.replace(/w\.h/,arg);
 });
 import Loading from '@/components/Loading';

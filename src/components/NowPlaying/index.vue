@@ -3,9 +3,9 @@
        <Loading v-if="isLoading"/>
         <ul v-else>
             <li v-for="item in movieInfoList" :key="item.id">
-                <div class="pic_show"><img :src="item.img |setWH('128.180')" ></div>
+                <div class="pic_show" @click="handleToDetail(item.id)"><img :src="item.img |setWH('128.180')" ></div>
                 <div class="info_list">
-                    <h2>{{item.nm}}</h2>
+                    <h2 @click="handleToDetail(item.id)">{{item.nm}}</h2>
                     <img v-if="item.version" src="@/assets/maxs.png" alt="">
                     <p>观众评 <span class="grade">{{item.sc}}</span></p>
                     <p>主演: {{item.star}}</p>
@@ -61,8 +61,9 @@ export default {
         })
     },
     methods:{
-       handleToDetail(){
-           console.log("handleToDetail")
+       handleToDetail(movieId){
+         this.$router.push('/movie/detail/'+movieId);
+       
        }
     },
 }

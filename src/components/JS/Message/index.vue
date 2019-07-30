@@ -15,7 +15,7 @@ export default {
 </script>
 <style scope>
 .message{
-    position: absolute;
+    position: fixed;
     width: 180px;
     height: 120px;
     top: 50%;
